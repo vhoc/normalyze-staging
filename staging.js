@@ -5,9 +5,14 @@ const files = {
     production: '/var/www/html',
     staging: '/var/www/staging',
 }
+const databases = {
+    production: 'normalyze',
+    staging: 'staging',
+    backupPath: '/var/www/backups/db'
+}
 
 if ( args[0] === 'pull' ) {
-    pull( files )
+    pull( files, databases )
 }
 
 if ( args[0] === 'push' ) {

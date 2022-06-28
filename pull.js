@@ -1,13 +1,15 @@
 import chalk from "chalk"
 import fs from 'fs-extra'
 import readline from 'readline'
+import exec from 'childprocess'
+import { timeStamp } from "./helpers"
 
 const confirm = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
 })
 
-const pull = async ( files ) => {
+const pull = async ( files, databases ) => {
     console.log( chalk.yellowBright( 'WARNING: This will overwrite the staging website with the production site files and database.'  ) )
     
     confirm.question( chalk.yellow('Do you weant to proceed? y/n: '), answer => {
@@ -20,6 +22,8 @@ const pull = async ( files ) => {
                     console.error( error )
                     process.exit()
                 } else {
+                    const timestamp = timeStamp()
+                    exec.exec( `sudo mysqldump -u root ${ databases.production } > ${ databases.backupPath }_${ timestamp }` )
                     console.log( chalk.greenBright( `All files have been copied from Production to Staging!` ) )
                     process.exit()
                 }
