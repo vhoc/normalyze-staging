@@ -2,7 +2,7 @@
   "name": "normalyze-staging",
   "version": "1.0.0",
   "description": "Staging manager for Normalyze website",
-  "main": "index.js",
+  "main": "staging.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
