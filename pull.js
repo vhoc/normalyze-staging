@@ -1,6 +1,11 @@
 import chalk from "chalk"
-import readline from 'readline'
 import fs from 'fs-extra'
+import readline from 'readline'
+
+const confirm = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+})
 
 const pull = ( files ) => {
     console.log( chalk.yellowBright( 'WARNING: This will overwrite the staging website with the production site files and database.'  ) )

@@ -1,10 +1,5 @@
-import readline from 'readline'
-import pull from './pull'
 
-const confirm = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-})
+import pull from 'pull'
 
 const args = process.argv.slice(2)
 const files = {
