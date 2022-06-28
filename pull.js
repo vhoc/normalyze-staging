@@ -18,11 +18,11 @@ const pull = async ( files, databases ) => {
 
             try {
                 console.log( 'Copying files from Production to Staging...' )
-                await osExec( `cp -R ${ files.production }/* ${ files.staging }` )
+                const copy = await osExec( `cp -R ${ files.production }/* ${ files.staging }` )
 
                 console.log( `Copy done. Cloning Production's permissions into Staging...` )
                 //await osExec( `rsync -ar ${ files.production } ${ files.staging }` )
-                await osExec( `find ${ files.staging } -exec chown user:httpd-group {} +` )
+                const permOwner = await osExec( `find ${ files.staging } -exec chown user:httpd-group {} +` )
                 await osExec( `find ${ files.staging } -type d -exec chmod -R 775 {} +` )
                 await osExec( `find ${ files.staging } -type f -exec chmod -R 664 {} +` )
                 await osExec( `chmod 660 ${ files.staging }/wp-config.php` )
