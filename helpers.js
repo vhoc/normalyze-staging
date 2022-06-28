@@ -1,3 +1,8 @@
+import { exec } from 'child_process';
+import util from 'node:util'
+
+const execPromise = util.promisify( exec )
+
 export const timeStamp = () => {
     const date = new Date()
     const year = date.getFullYear()
@@ -7,4 +12,12 @@ export const timeStamp = () => {
     const minute = date.getMinutes()
     const second = date.getSeconds()
     return `${year}${month}${day}-${hour}${minute}${second}`
+}
+
+export const osExec = async ( command ) => {
+    try {
+        const { stdout, stderr } = await execPromise( command )
+    } catch (error) {
+        console.error( error )
+    }
 }

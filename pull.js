@@ -2,7 +2,7 @@ import chalk from "chalk"
 import fs from 'fs-extra'
 import readline from 'readline'
 import { exec } from 'child_process';
-import { timeStamp } from "./helpers.js"
+import { timeStamp, osExec } from "./helpers.js"
 
 const confirm = readline.createInterface({
     input: process.stdin,
@@ -17,24 +17,29 @@ const pull = async ( files, databases ) => {
             const timestamp = timeStamp()
 
             console.log( 'Copying files from Production to Staging...' )
-            exec( `cp -R ${ files.production }/* ${ files.staging }` )
+            await osExec( `cp -R ${ files.production }/* ${ files.staging }` )
 
             console.log( `Copy done. Cloning Production's permissions into Staging...` )
-            exec( `rsync -ar ${ files.production } ${ files.staging }` )
+            //await osExec( `rsync -ar ${ files.production } ${ files.staging }` )
+            await osExec( `find ${ files.staging } -exec chown user:httpd-group {} +` )
+            await osExec( `find ${ files.staging } -type d -exec chmod -R 775 {} +` )
+            await osExec( `find ${ files.staging } -type f -exec chmod -R 664 {} +` )
+            await osExec( `chmod 660 ${ files.staging }/wp-config.php` )
+            await osExec( `chmod 644 ${ files.staging }/.htaccess` )
 
             console.log( `File permissions applied. Backing up Production's database...` )
-            exec( `mysqldump -u root ${ databases.production } > ${ databases.backupPath }_${ timestamp }.sql` )
+            await osExec( `mysqldump -u root ${ databases.production } > ${ databases.backupPath }_${ timestamp }.sql` )
 
             console.log( `Database backed up. Importing Production database into the Staging database...` )
-            exec( `mysql ${ databases.staging } < ${ databases.backupPath }_${ timestamp }.sql` )
+            await osExec( `mysql ${ databases.staging } < ${ databases.backupPath }_${ timestamp }.sql` )
 
             console.log( `Production database imported into the Staging database. Updating the URL in the whole database...` )
-            exec( `mysql -e "UPDATE wp_options SET option_value = replace( option_value, 'https://normalyze.ai', 'https://staging.normalyze.ai' );"` )
-            exec( `mysql -e "UPDATE wp_posts SET guid = replace(guid, 'https://normalyze.ai','https://staging.normalyze.ai');"` )
-            exec( `mysql -e "UPDATE wp_posts SET post_content = replace(post_content, 'https://normalyze.ai', 'https://staging.normalyze.ai');"` )
-            exec( `mysql -e "UPDATE wp_postmeta SET meta_value = replace(meta_value,'https://normalyze.ai','https://staging.normalyze.ai');"` )
+            await osExec( `mysql -e "UPDATE staging.wp_options SET option_value = replace( option_value, 'https://normalyze.ai', 'https://staging.normalyze.ai' );"` )
+            await osExec( `mysql -e "UPDATE staging.wp_posts SET guid = replace(guid, 'https://normalyze.ai','https://staging.normalyze.ai');"` )
+            await osExec( `mysql -e "UPDATE staging.wp_posts SET post_content = replace(post_content, 'https://normalyze.ai', 'https://staging.normalyze.ai');"` )
+            await osExec( `mysql -e "UPDATE staging.wp_postmeta SET meta_value = replace(meta_value,'https://normalyze.ai','https://staging.normalyze.ai');"` )
 
-            console.log( chalk.bgGreenBright( `Staging environment has been updated to the latest Production state!` ) )
+            console.log( chalk.greenBright( `Staging environment has been updated to the latest Production state!` ) )
             process.exit()
     
         } else {
