@@ -1,0 +1,19 @@
+{
+  "name": "normalyze-staging",
+  "version": "1.0.0",
+  "description": "Staging manager for Normalyze website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vhoc/normalyze-staging.git"
+  },
+  "author": "Victor Olvera",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vhoc/normalyze-staging/issues"
+  },
+  "homepage": "https://github.com/vhoc/normalyze-staging#readme"
+}
