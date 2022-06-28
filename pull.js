@@ -1,7 +1,7 @@
 import chalk from "chalk"
 import fs from 'fs-extra'
 import readline from 'readline'
-import exec from 'node:childprocess'
+import { exec } from 'child_process';
 import { timeStamp } from "./helpers.js"
 
 const confirm = readline.createInterface({
@@ -23,7 +23,7 @@ const pull = async ( files, databases ) => {
                     process.exit()
                 } else {
                     const timestamp = timeStamp()
-                    exec.exec( `sudo mysqldump -u root ${ databases.production } > ${ databases.backupPath }_${ timestamp }` )
+                    exec( `sudo mysqldump -u root ${ databases.production } > ${ databases.backupPath }_${ timestamp }` )
                     console.log( chalk.greenBright( `All files have been copied from Production to Staging!` ) )
                     process.exit()
                 }
