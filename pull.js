@@ -1,7 +1,7 @@
 import chalk from "chalk"
 import fs from 'fs-extra'
 import readline from 'readline'
-import exec from 'childprocess'
+import exec from 'node:childprocess'
 import { timeStamp } from "./helpers"
 
 const confirm = readline.createInterface({
