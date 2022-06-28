@@ -7,7 +7,7 @@ const confirm = readline.createInterface({
     output: process.stdout,
 })
 
-const pull = ( files ) => {
+const pull = async ( files ) => {
     console.log( chalk.yellowBright( 'WARNING: This will overwrite the staging website with the production site files and database.'  ) )
     
     confirm.question( chalk.yellow('Do you weant to proceed? y/n: '), answer => {
