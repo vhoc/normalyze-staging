@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/vhoc/normalyze-staging/issues"
   },
-  "homepage": "https://github.com/vhoc/normalyze-staging#readme"
+  "homepage": "https://github.com/vhoc/normalyze-staging#readme",
+  "dependencies": {
+    "chalk": "^5.0.1"
+  }
 }
