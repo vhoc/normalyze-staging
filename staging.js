@@ -10,7 +10,7 @@ const confirm = readline.createInterface({
 const args = process.argv.slice(2)
 
 if ( args[0] === 'pull' ) {
-    console.log( chalk.yellow( 'WARNING: This will overwrite the staging website with the production site files and database.'  ) )
+    console.log( chalk.yellowBright( 'WARNING: This will overwrite the staging website with the production site files and database.'  ) )
     
     confirm.question( chalk.yellow('Do you weant to proceed?'), answer => {
         if ( answer == 'y' || answer == 'yes' ) {
