@@ -1,6 +1,5 @@
-import chalk from "chalk"
-//const readline = require( 'readline' )
 import readline from 'readline'
+import pull from './pull'
 
 const confirm = readline.createInterface({
     input: process.stdin,
@@ -8,18 +7,13 @@ const confirm = readline.createInterface({
 })
 
 const args = process.argv.slice(2)
+const files = {
+    production: '/var/www/html',
+    staging: '/var/www/staging',
+}
 
 if ( args[0] === 'pull' ) {
-    console.log( chalk.yellowBright( 'WARNING: This will overwrite the staging website with the production site files and database.'  ) )
-    
-    confirm.question( chalk.yellow('Do you weant to proceed?'), answer => {
-        if ( answer == 'y' || answer == 'yes' ) {
-            console.log( 'Pulling files and database from production to staging...' )
-        } else {
-            console.log( 'Production to Staging pull cancelled.' )
-        }
-    } )
-
+    pull( files )
 }
 
 if ( args[0] === 'push' ) {
