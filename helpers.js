@@ -35,7 +35,9 @@ export const updateWpconfig = async ( file ) => {
         const replaced = contents.replace(/\'DB_NAME\', \'normalyze\'/g, `'DB_NAME', 'staging'`);
       
         writeFile( file, replaced, 'utf-8', function ( error ) {
-            console.log( chalk.redBright( error ) )
+            if( error ) {
+                console.log( chalk.redBright( error ) )
+            }
         })
     })
 }
