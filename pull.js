@@ -14,7 +14,7 @@ const pull = async ( files, databases ) => {
     
     confirm.question( chalk.yellow('Do you weant to proceed? y/n: '), answer => {
         if ( answer == 'y' || answer == 'yes' ) {
-            console.log( 'Pulling files and database from production to staging...' )
+            console.log( 'Pulling files from production to staging...' )
             fs.copySync( files.production, files.staging, {
                 overwrite: true
             }, error => {
@@ -23,7 +23,9 @@ const pull = async ( files, databases ) => {
                     process.exit()
                 } else {
                     const timestamp = timeStamp()
+                    console.log( `Exported the database into a temporary file...` )
                     exec( `sudo mysqldump -u root ${ databases.production } > ${ databases.backupPath }_${ timestamp }` )
+                    console.log( `Database exported.` )
                     console.log( chalk.greenBright( `All files have been copied from Production to Staging!` ) )
                     process.exit()
                 }
