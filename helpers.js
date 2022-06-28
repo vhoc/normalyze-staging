@@ -1,5 +1,7 @@
 import { exec } from 'child_process';
 import util from 'node:util'
+import { readFile, writeFile } from 'fs';
+import chalk from 'chalk';
 
 const execPromise = util.promisify( exec )
 
@@ -21,4 +23,19 @@ export const osExec = async ( command ) => {
         console.error( error )
         process.exit(1)
     }
+}
+
+export const updateWpconfig = async ( file ) => {
+    readFile( file, 'utf-8', function ( error, contents ) {
+        if ( error ) {
+          console.log( chalk.redBright( error ) )
+          process.exit(1)
+        }
+      
+        const replaced = contents.replace(/\'DB_NAME\', \'normalyze\'/g, `'DB_NAME', 'staging'`);
+      
+        writeFile( file, replaced, 'utf-8', function ( error ) {
+            console.log( chalk.redBright( error ) )
+        })
+    })
 }

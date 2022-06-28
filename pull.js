@@ -1,8 +1,6 @@
 import chalk from "chalk"
-import fs from 'fs-extra'
 import readline from 'readline'
-import { exec } from 'child_process';
-import { timeStamp, osExec } from "./helpers.js"
+import { timeStamp, osExec, updateWpconfig } from "./helpers.js"
 
 const confirm = readline.createInterface({
     input: process.stdin,
@@ -28,7 +26,10 @@ const pull = async ( files, databases ) => {
                 await osExec( `chmod 660 ${ files.staging }/wp-config.php` )
                 await osExec( `chmod 644 ${ files.staging }/.htaccess` )
 
-                console.log( `File permissions applied. Backing up Production's database...` )
+                console.log( `File permissions applied. Updating URL in the wp-config.php file...` )
+                await updateWpconfig( `${ files.staging }/wp-config.php` )
+
+                console.log( `wp-config.php updated. Backing up Production's database...` )
                 await osExec( `mysqldump -u root ${ databases.production } > ${ databases.backupPath }_${ timestamp }.sql` )
 
                 console.log( `Database backed up. Importing Production database into the Staging database...` )
