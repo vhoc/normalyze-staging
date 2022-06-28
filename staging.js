@@ -1,5 +1,7 @@
 import chalk from "chalk"
-const readline = require( 'readline' )
+//const readline = require( 'readline' )
+import readline from 'readline'
+
 const confirm = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
