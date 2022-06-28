@@ -1,4 +1,4 @@
-const arguments = process.argv
+const arguments = process.argv.slice(2)
 
 if ( arguments[0] === 'pull' ) {
     console.log( 'pulling files from production' )
