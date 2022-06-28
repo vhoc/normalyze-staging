@@ -19,5 +19,6 @@ export const osExec = async ( command ) => {
         const { stdout, stderr } = await execPromise( command )
     } catch (error) {
         console.error( error )
+        process.exit(1)
     }
 }
