@@ -18,14 +18,16 @@ const pull = ( files ) => {
             }, error => {
                 if ( error ) {
                     console.error( error )
-                    
+                    return false
                 } else {
                     console.log( chalk.greenBright( `All files have been copied from Production to Staging!` ) )
+                    return true
                 }
             } )
     
         } else {
             console.log( 'Production to Staging pull cancelled.' )
+            return false
         }
     } )
 }
