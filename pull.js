@@ -30,4 +30,4 @@ const pull = ( files ) => {
     } )
 }
 
-module.exports = pull
+export default pull

@@ -1,4 +1,4 @@
-import pull from './pull.js'
+import pull from './pull'
 
 const args = process.argv.slice(2)
 const files = {
