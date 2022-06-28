@@ -18,7 +18,7 @@ const pull = async ( files, databases ) => {
 
             try {
                 console.log( 'Copying files from Production to Staging...' )
-                await osExec( `cp -R ${ files.production }/* ${ files.staging }` )
+                await osExec( `cp -a ${ files.production }/. ${ files.staging }` )
 
                 console.log( `Copy done. Cloning Production's permissions into Staging...` )
                 //await osExec( `rsync -ar ${ files.production } ${ files.staging }` )
