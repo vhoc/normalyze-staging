@@ -18,20 +18,20 @@ const pull = async ( files ) => {
             }, error => {
                 if ( error ) {
                     console.error( error )
-                    return false
+                    process.exit()
                 } else {
                     console.log( chalk.greenBright( `All files have been copied from Production to Staging!` ) )
-                    return true
+                    process.exit()
                 }
             } )
     
         } else {
             console.log( 'Production to Staging pull cancelled.' )
-            return false
+            process.exit()
         }
     } )
 
-    process.exit()
+    //
 }
 
 export default pull
