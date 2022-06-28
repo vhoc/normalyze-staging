@@ -30,6 +30,8 @@ const pull = async ( files ) => {
             return false
         }
     } )
+
+    process.exit()
 }
 
 export default pull

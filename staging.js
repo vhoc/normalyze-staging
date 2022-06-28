@@ -7,9 +7,7 @@ const files = {
 }
 
 if ( args[0] === 'pull' ) {
-    pull( files ).then( () => {
-        process.exit()
-    } )
+    pull( files )
 }
 
 if ( args[0] === 'push' ) {
