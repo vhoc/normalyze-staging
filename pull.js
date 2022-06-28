@@ -12,17 +12,17 @@ const confirm = readline.createInterface({
 const pull = async ( files, databases ) => {
     console.log( chalk.yellowBright( 'WARNING: This will overwrite the staging website with the production site files and database.'  ) )
     
-    confirm.question( chalk.yellow('Do you weant to proceed? y/n: '), answer => {
+    confirm.question( chalk.yellow('Do you weant to proceed? y/n: '), async answer => {
         if ( answer == 'y' || answer == 'yes' ) {
             const timestamp = timeStamp()
 
             try {
                 console.log( 'Copying files from Production to Staging...' )
-                const copy = await osExec( `cp -R ${ files.production }/* ${ files.staging }` )
+                await osExec( `cp -R ${ files.production }/* ${ files.staging }` )
 
                 console.log( `Copy done. Cloning Production's permissions into Staging...` )
                 //await osExec( `rsync -ar ${ files.production } ${ files.staging }` )
-                const permOwner = await osExec( `find ${ files.staging } -exec chown user:httpd-group {} +` )
+                await osExec( `find ${ files.staging } -exec chown user:httpd-group {} +` )
                 await osExec( `find ${ files.staging } -type d -exec chmod -R 775 {} +` )
                 await osExec( `find ${ files.staging } -type f -exec chmod -R 664 {} +` )
                 await osExec( `chmod 660 ${ files.staging }/wp-config.php` )
