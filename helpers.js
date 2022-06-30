@@ -25,14 +25,15 @@ export const osExec = async ( command ) => {
     }
 }
 
-export const updateWpconfig = async ( file ) => {
+export const updateWpconfig = async ( file, dbToReplace, dbReplacement ) => {
     readFile( file, 'utf-8', function ( error, contents ) {
         if ( error ) {
           console.log( chalk.redBright( error ) )
           process.exit(1)
         }
-      
-        const replaced = contents.replace(/\'DB_NAME\', \'normalyze\'/g, `'DB_NAME', 'staging'`);
+        
+        const regex = new RegExp( `/\'DB_NAME\', \'${ dbToReplace }\'/g` )
+        const replaced = contents.replace(regex, `'DB_NAME', '${ dbReplacement }'`);
       
         writeFile( file, replaced, 'utf-8', function ( error ) {
             if( error ) {

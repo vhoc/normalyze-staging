@@ -7,7 +7,7 @@ const confirm = readline.createInterface({
     output: process.stdout,
 })
 
-const pull = async ( files, databases ) => {
+const pull = async ( files, databases, url ) => {
     console.log( chalk.yellowBright( 'WARNING: This will overwrite the staging website with the production site files and database.'  ) )
     
     confirm.question( chalk.yellow('Do you weant to proceed? y/n: '), async answer => {
@@ -27,7 +27,7 @@ const pull = async ( files, databases ) => {
                 await osExec( `chmod 644 ${ files.staging }/.htaccess` )
 
                 console.log( `File permissions applied. Updating URL in the wp-config.php file...` )
-                await updateWpconfig( `${ files.staging }/wp-config.php` )
+                await updateWpconfig( `${ files.staging }/wp-config.php`, databases.production, databases.staging )
 
                 console.log( `wp-config.php updated. Backing up Production's database...` )
                 await osExec( `mysqldump -u root ${ databases.production } > ${ databases.backupPath }_${ timestamp }.sql` )
@@ -36,10 +36,10 @@ const pull = async ( files, databases ) => {
                 await osExec( `mysql ${ databases.staging } < ${ databases.backupPath }_${ timestamp }.sql` )
 
                 console.log( `Production database imported into the Staging database. Updating the URL in the whole database...` )
-                await osExec( `mysql -e "UPDATE staging.wp_options SET option_value = replace( option_value, 'https://normalyze.ai', 'https://staging.normalyze.ai' );"` )
-                await osExec( `mysql -e "UPDATE staging.wp_posts SET guid = replace(guid, 'https://normalyze.ai','https://staging.normalyze.ai');"` )
-                await osExec( `mysql -e "UPDATE staging.wp_posts SET post_content = replace(post_content, 'https://normalyze.ai', 'https://staging.normalyze.ai');"` )
-                await osExec( `mysql -e "UPDATE staging.wp_postmeta SET meta_value = replace(meta_value,'https://normalyze.ai','https://staging.normalyze.ai');"` )
+                await osExec( `mysql -e "UPDATE ${ databases.staging }.wp_options SET option_value = replace( option_value, '${ url.production }', '${ url.staging }' );"` )
+                await osExec( `mysql -e "UPDATE ${ databases.staging }.wp_posts SET guid = replace(guid, '${ url.production }','${ url.staging }');"` )
+                await osExec( `mysql -e "UPDATE ${ databases.staging }.wp_posts SET post_content = replace(post_content, '${ url.production }', '${ url.staging }');"` )
+                await osExec( `mysql -e "UPDATE ${ databases.staging }.wp_postmeta SET meta_value = replace(meta_value,'${ url.production }','${ url.staging }');"` )
 
                 console.log( chalk.greenBright( `Staging environment has been updated to the latest Production state!` ) )
                 process.exit()
