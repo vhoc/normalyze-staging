@@ -36,7 +36,7 @@ export const updateWpconfig = async ( file, mode ) => {
     
         switch( mode ) {
             case 'toStaging':
-                replaced = contents.replace(/\'DB_NAME\', \'`normalyze`\'/g, `'DB_NAME', 'staging'`);
+                replaced = contents.replace(/\'DB_NAME\', \'normalyze\'/g, `'DB_NAME', 'staging'`);
                 break;
             case 'toFake':
                 replaced = contents.replace(/\'DB_NAME\', \'staging\'/g, `'DB_NAME', 'fake'`);
