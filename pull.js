@@ -27,7 +27,7 @@ const pull = async ( files, databases, url ) => {
                 await osExec( `chmod 644 ${ files.staging }/.htaccess` )
 
                 console.log( `File permissions applied. Updating URL in the wp-config.php file...` )
-                await updateWpconfig( `${ files.staging }/wp-config.php`, databases.production, databases.staging )
+                await updateWpconfig( `${ files.staging }/wp-config.php`, 'toStaging' )
 
                 console.log( `wp-config.php updated. Backing up Production's database...` )
                 await osExec( `mysqldump -u root ${ databases.production } > ${ databases.backupPath }_${ timestamp }.sql` )
